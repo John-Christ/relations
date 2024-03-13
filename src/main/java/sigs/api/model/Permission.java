@@ -1,7 +1,11 @@
 package sigs.api.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "permission")
@@ -17,15 +21,19 @@ public class Permission {
 
 
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "assignedPermissions")
+    private Set<Role> roleSet = new HashSet<>();
 
 
 
-    @ManyToOne
-    @JoinColumn(name = "module_id")
-    private Module module;
+    @ManyToMany
+    @JoinTable(name = "permission_module",
+            joinColumns = @JoinColumn(name = "permission_id"),
+            inverseJoinColumns = @JoinColumn(name = "module_id")
+    )
+    private Set<Module> assignedModules = new HashSet<>();
+
 
 
 
@@ -38,25 +46,27 @@ public class Permission {
     }
 
 
-
-    public Role getRole() {
-        return role;
+    public Set<Role> getRoleSet() {
+        return roleSet;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleSet(Set<Role> roleSet) {
+        this.roleSet = roleSet;
     }
 
 
 
 
-    public Module getModule() {
-        return module;
+    public Set<Module> getAssignedModules() {
+        return assignedModules;
     }
 
-    public void setModule(Module module) {
-        this.module = module;
+    public void setAssignedModules(Set<Module> assignedModules) {
+        this.assignedModules = assignedModules;
     }
+
+
+
 
 
 

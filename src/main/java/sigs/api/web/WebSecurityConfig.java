@@ -18,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+// import static org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry.RequestMatchers.antMatchers;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -67,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 //Here starts Admin permissions
                 .antMatchers("/admin", "/add", "/delete/{id}").hasRole("ADMIN")
-                .antMatchers("/user-update/{id}", "/user-add", "/user-delete/{id}").hasRole("ADMIN")
+               // .antMatchers("/user-update/{id}", "/user-add", "/user-delete/{id}").hasRole("ADMIN")
                 .antMatchers("/produit-update/{id}", "/produit-add", "/produit-delete/{id}").hasRole("ADMIN")
                 .antMatchers("/fournisseur-update/{id}", "/fournisseur-add", "/fournisseur-delete/{id}").hasRole("ADMIN")
                 .antMatchers("/demande-update/{id}", "/demande-add", "/demande-delete/{id}").hasRole("ADMIN")
@@ -85,7 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // Here starts Users and Admin permissions
                 .antMatchers("/employees", "/update/{id}").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/users", "/user/{id}").hasAnyRole("USER", "ADMIN")
+               // .antMatchers("/users", "/user/{id}").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/produits", "/produit/{id}").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/fournisseurs", "/fournisseur/{id}").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/demandes", "/demande/{id}").hasAnyRole("USER", "ADMIN")
@@ -100,7 +102,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //, "/profile"
 
                 // Only for supreme admin
-                .antMatchers("/authenticate", "/register").permitAll().
+                .antMatchers("/authenticate", "/register").permitAll()
+                .antMatchers("/role-update/{id}", "/role-add", "/role-delete/{id}").permitAll()
+                .antMatchers("/users", "/user/{id}").permitAll()
+                .antMatchers("/permission-update/{id}", "/permission-add", "/permission-delete/{id}").permitAll()
+                .antMatchers("/permissions", "/permission/{id}").permitAll()
+                .antMatchers("/module-update/{id}", "/module-add", "/module-delete/{id}").permitAll()
+                .antMatchers("/modules", "/module/{id}").permitAll()
+                .antMatchers("/roles", "/role/{id}").permitAll()
+                .antMatchers("/user-update/{id}", "/user-add", "/user-delete/{id}").permitAll().
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to

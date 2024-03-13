@@ -59,8 +59,8 @@ public class PermissionController
 
         return repository.findById(id)
                 .map(permission -> {
-                    permission.setRole(newPermission.getRole());
-                    permission.setModule(newPermission.getModule());
+                    permission.setRoleSet(newPermission.getRoleSet());
+                    permission.setAssignedModules(newPermission.getAssignedModules());
                     permission.setAction(newPermission.getAction());
 
 

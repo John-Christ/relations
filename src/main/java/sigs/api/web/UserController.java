@@ -4,10 +4,12 @@ package sigs.api.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import sigs.api.model.DAOUser;
+//import sigs.api.service.UserService;
 
 
 import sigs.api.repository.DaoUser;
@@ -26,7 +28,7 @@ import sigs.api.repository.UserDao;
 
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/")
 @RestController
 public class UserController
 {
@@ -34,6 +36,10 @@ public class UserController
 
     @Autowired
     private UserDao userDao;
+
+
+
+
 
 
     private final DaoUser repository;
@@ -45,7 +51,7 @@ public class UserController
 
     // Aggregate root
     // tag::get-aggregate-root[]
-    @GetMapping("/")
+    @GetMapping("/users")
     List<DAOUser> all() {
         return (List<DAOUser>) repository.findAll();
     }
@@ -65,6 +71,10 @@ public class UserController
                 .orElseThrow(() -> new RestApiNotFoundException(id));
     }
 
+
+
+
+
     @PutMapping("/user-update/{id}")
     DAOUser replaceUser(@RequestBody DAOUser newUser, @PathVariable Long id) {
 
@@ -76,8 +86,8 @@ public class UserController
                     user.setTel(newUser.getTel());
                     user.setUsername(newUser.getUsername());
                     user.setPassword(newUser.getPassword());
-                    user.setRole(newUser.getRole());
-                    user.setPermission(newUser.getPermission());
+                    user.setAssignedRoles(newUser.getAssignedRoles());
+                 //   user.setPermission(newUser.getPermission());
                     return repository.save(user);
                 })
                 .orElseGet(() -> {

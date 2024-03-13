@@ -1,7 +1,11 @@
 package sigs.api.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "module")
@@ -19,6 +23,14 @@ public class Module {
 
     @Column
     private String description;
+
+
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "assignedModules")
+    private Set<Permission> moduleSet = new HashSet<>();
+
+
 
 
 
@@ -60,6 +72,14 @@ public class Module {
 
 
 
+
+    public Set<Permission> getModuleSet() {
+        return moduleSet;
+    }
+
+    public void setModuleSet(Set<Permission> moduleSet) {
+        this.moduleSet = moduleSet;
+    }
 
 
 }

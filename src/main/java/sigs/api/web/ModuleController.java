@@ -61,6 +61,7 @@ public class ModuleController
                     module.setNom(newModule.getNom());
                     module.setStatut(newModule.getStatut());
                     module.setDescription(newModule.getDescription());
+                    module.setModuleSet(newModule.getModuleSet());
 
 
                     return repository.save(module);

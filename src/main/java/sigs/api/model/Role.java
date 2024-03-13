@@ -1,8 +1,12 @@
 package sigs.api.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "role")
@@ -10,7 +14,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long roleId;
     @Column
     private String label;
     @Column
@@ -20,6 +24,23 @@ public class Role {
 
     @Column
     private String description;
+
+
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "assignedRoles")
+    private Set<DAOUser> userSet = new HashSet<>();
+
+
+
+    @ManyToMany
+    @JoinTable(name = "role_permission",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private Set<Permission> assignedPermissions = new HashSet<>();
+
+
 
 
 
@@ -51,16 +72,39 @@ public class Role {
 
 
 
-    public Long getId() {
-        return id;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
 
 
+
+
+
+
+
+
+    public Set<DAOUser> getUserSet() {
+        return userSet;
+    }
+
+    public void setUserSet(Set<DAOUser> userSet) {
+        this.userSet = userSet;
+    }
+
+
+
+    public Set<Permission> getAssignedPermissions() {
+        return assignedPermissions;
+    }
+
+    public void setAssignedPermissions(Set<Permission> assignedPermissions) {
+        this.assignedPermissions = assignedPermissions;
+    }
 
 
 }
